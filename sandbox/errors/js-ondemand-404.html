@@ -23,32 +23,42 @@
             let marker = document.getElementById('response-marker');
 
             if (action) {
-                action.addEventListener('click', function() {
-                    let ajax = new XMLHttpRequest();
+                action.addEventListener('click', function(e) {
+                    e = e || window.event;
 
-                    ajax.open('GET', './ajax');
-                    ajax.onload = function() {
-                        if (ajax.status === 200) {
-                            if (marker) {
-                                marker.innerText = 'success';
-                                marker.classList.add('success');
+                    if (e.target) {
+                        let ajax = new XMLHttpRequest();
+
+                        ajax.open('GET', './ajax');
+                        ajax.onload = function () {
+                            if (ajax.status === 200) {
+                                if (marker) {
+                                    marker.innerText = 'success';
+                                    marker.classList.add('success');
+                                }
+                            } else {
+                                if (marker) {
+                                    marker.innerText = 'error';
+                                    marker.classList.add('error');
+                                }
                             }
-                        } else {
-                            if (marker) {
+                        };
+
+                        ajax.onerror = function () {
+                            if (status) {
                                 marker.innerText = 'error';
                                 marker.classList.add('error');
                             }
-                        }
-                    };
+                        };
 
-                    ajax.onerror = function() {
-                        if (status) {
-                            marker.innerText = 'error';
-                            marker.classList.add('error');
-                        }
-                    };
+                        ajax.send();
 
-                    ajax.send();
+                        if (e.stopPropagation()) {
+                            e.stopPropagation();
+                        } else {
+                            e.cancelBubble = true;
+                        }
+                    }
                 }, false);
             }
         </script>
