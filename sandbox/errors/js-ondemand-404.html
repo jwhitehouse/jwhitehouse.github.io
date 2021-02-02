@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="robots" content="nofollow, noindex" />
+        <style>
+            .success {
+                color: green;
+            }
+
+            .error {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>JS 404</h1>
+        <p>This page tries to make an AJAX call to a non-existent resource on demand.</p>
+        <p><a href="#" id="request-action">Request Data</a></p>
+        <p>Status: <span id="response-marker">...</span></p>
+
+        <script>
+            let action = document.getElementById('request-action');
+            let marker = document.getElementById('response-marker');
+
+            if (action) {
+                action.addEventListener('click', function() {
+                    let ajax = new XMLHttpRequest();
+
+                    ajax.open('GET', './ajax');
+                    ajax.onload = function() {
+                        if (ajax.status === 200) {
+                            if (marker) {
+                                marker.innerText = 'success';
+                                marker.classList.add('success');
+                            }
+                        } else {
+                            if (marker) {
+                                marker.innerText = 'error';
+                                marker.classList.add('error');
+                            }
+                        }
+                    };
+
+                    ajax.onerror = function() {
+                        if (status) {
+                            marker.innerText = 'error';
+                            marker.classList.add('error');
+                        }
+                    };
+
+                    ajax.send();
+                }, false);
+            }
+        </script>
+    </body>
+</html>
